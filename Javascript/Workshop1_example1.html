@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Workshop 1</title>
+</head>
+<body>
+    <h1>Hello World Page</h1>
+    <script>
+        // This code runs automatically when the page loads.
+        // The output is visible in the developer console (F12).
+        console.log('Hello world from a file!');
+    </script>
+
+    <h1>Conditionals Example</h1>
+    <script>
+        let age = 51;
+        const order = 'Beer';
+        if (age > 50) {
+            document.write("<p>He's over 50!</p>");
+        } else if (age <= 50 && age > 30) {
+            document.write("<p>Middle aged man, who ordered some " + order + "</p>");
+        } else {
+            document.write("<p>It seems you're a bit underaged.</p>");
+        }
+    </script>
+
+    <h1>Loops & Functions Example</h1>
+    <script>
+        // This function checks if an age is 18 or over
+        function areYouOldEnough(age) {
+            if (age >= 18) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        // This loop checks a few different ages
+        for (let i = 13; i <= 26; i++) {
+            if (areYouOldEnough(i)) {
+                console.log("A person of age " + i + " is old enough.");
+            } else {
+                console.log("A person of age " + i + " is NOT old enough.");
+            }
+        }
+    </script>
+</body>
+</html>

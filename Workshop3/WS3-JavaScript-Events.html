@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WS3 – JavaScript Events</title>
+</head>
+<!--There is onload that will give alert after the page is fully loaded-->
+<body onload="alert('Page is fully loaded!')">
+    <h1>Workshop-3 Guide and Return box</h1>
+    <p>This is demo page of different javascript events</p>
+
+    <h3>Onclick and onchange</h3>
+    <!--This uses HTML attribute that triggers alert to popup and show text 
+    "Input changed!" and "You have clicked the button"-->
+    <input type="text" id="firstInput" onchange="alert('Input changed!')">
+    <button onclick="alert('You have clicked the button')">Click here!</button>
+
+    <h3>Onmouseover and onmouseout</h3>
+    <!--When you hover over the text area it triggers alert "Your mouse is over this text" 
+    and when you remove the mouse it gives alert "Mouse has left the text". 
+    There is also some changes in the style of the text-->
+    <button onmouseover="alert('Your mouse is over this text')" onmouseout="alert('Mouse has left the text')" 
+    style="border: 0; background-color: rgb(248, 241, 36);"><b style="color: black;">Try to hover on this text</b></button>
+
+
+    <h3>Onkeydown</h3>
+    <!--There is input and in it is placeholder text that is asking a question, 
+    but when you try to type the answer it triggers alert that says "WRONG!"-->
+    <input type="text" placeholder="How much is 3+3?" onkeydown="alert('WRONG!')">
+
+    <h3>Add and remove eventListener</h3>
+    <!--This is the button that this function is for-->
+    <button id="tryButton">Pick me! Pick me!</button>
+    <!---Here is the script for element "tryButton"-->
+    <script>
+    const button = document.getElementById("tryButton");
+    //frist we need to tell this what the function is 
+
+    function doItOnce() {
+        alert("You can only do this once");
+        button.removeEventListener("click", doItOnce);
+    }
+
+    // and it is that when it runs addEventListener, we only want it to do it once
+    button.addEventListener("click", doItOnce);
+    </script>
+
+
+</body>
+</html>

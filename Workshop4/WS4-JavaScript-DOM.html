@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Workshop 4 – JavaScript DOM</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 2rem;
+      line-height: 1.5;
+    }
+    section {
+      border: 2px solid #ccc;
+      border-radius: 10px;
+      padding: 1rem;
+      margin-bottom: 2rem;
+    }
+    h2 {
+      color: #333;
+    }
+    .red-background {
+      background-color: red;
+      color: white;
+      padding: 10px;
+      margin-top: 10px;
+    }
+    .fade-in {
+      opacity: 0;
+      animation: fadeIn 2s forwards;
+    }
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+  </style>
+</head>
+    <body>
+
+    <h1>Workshop 4: JavaScript and DOM</h1>
+    <p>We try here these 5 objectives from workshop 4</p>
+
+        <h2>Objective 1: Understanding the Document Object Model (DOM)</h2>
+    <!-- ================= Objective 1 ================= -->
+    <section id="obj1">
+
+        <h1 id="main-title">Welcome to DOM Scripting!</h1>
+        <p class="intro-text">This is an introductory paragraph.</p>
+            
+    <script>
+        // Accessing an element by ID
+        const titleElement = document.getElementById('main-title');
+        console.log('Title Element:', titleElement.textContent);
+
+        // Accessing elements by class name (returns a collection)
+        const introParagraphs = document.getElementsByClassName('intro-text');
+        console.log('Intro Paragraphs:', introParagraphs[0].textContent);
+    </script>
+    </section>
+
+        <h2>Objective 2: Finding and Selecting HTML Elements</h2>
+    <!-- ================= Objective 2 ================= -->
+    <section id="obj2">
+        <h1 id="unique-id">My Unique Heading</h1>
+        <p class="info-text">First info paragraph.</p>
+        <p class="info-text">Second info paragraph.</p>
+        <div>A simple div.</div>
+        <ul>
+            <li>List Item 1</li>
+            <li>List Item 2</li>
+        </ul>
+
+    <script>
+        // 1. Get element by ID (returns a single element)
+        const uniqueHeading = document.getElementById('unique-id');
+        console.log('Element by ID:', uniqueHeading.textContent);
+
+        // 2. Get elements by Class Name (returns an HTMLCollection)
+        const infoParagraphs = document.getElementsByClassName('info-text');
+        console.log('Elements by Class Name:', infoParagraphs[0].textContent);
+
+        // 3. Get elements by Tag Name (returns an HTMLCollection)
+        const allParagraphs = document.getElementsByTagName('p');
+        console.log('Elements by Tag Name (all paragraphs):', allParagraphs.length);
+
+        // 4. Query Selector (returns the first element that matches the CSS selector)
+        const firstDiv = document.querySelector('div');
+        console.log('First Div by Query Selector:', firstDiv.textContent);
+
+        // 5. Query Selector All (returns a NodeList of all matching elements)
+        const allListItems = document.querySelectorAll('ul li');
+        console.log('All List Items by Query Selector All:', allListItems.length);
+    </script>
+    </section>
+
+        <h2>Objective 3: Changing HTML Content and Attributes</h2>
+    <!-- ================= Objective 3 ================= -->
+    <section id="obj3">
+
+        <h1 id="myHeading">Original Heading Text</h1>
+        <p id="myParagraph">This is the original paragraph content.</p>
+        <img id="myImage" src="https://via.placeholder.com/150" alt="Placeholder Image"><br><br>
+        <a id="myLink" href="https://www.google.com">Visit Google</a>
+
+    <script>
+        // 1. Changing innerHTML (for rich text)
+        const headingElement = document.getElementById('myHeading');
+        headingElement.innerHTML = '<strong>New <em>Updated</em> Heading</strong>';
+
+        // 2. Changing textContent (for plain text)
+        const paragraphElement = document.getElementById('myParagraph');
+        paragraphElement.textContent = 'The paragraph content has been changed to plain text.';
+
+        // 3. Changing an attribute (src for an image)
+        const imageElement = document.getElementById('myImage');
+        imageElement.setAttribute('src', 'https://picsum.photos/id/237/150/150');
+        imageElement.setAttribute('alt', 'Cute Dog Image');
+
+        // 4. Changing multiple attributes (href and target for a link)
+        const linkElement = document.getElementById('myLink');
+        linkElement.setAttribute('href', 'https://www.w3schools.com');
+        linkElement.setAttribute('target', '_blank'); // Opens in a new tab
+        linkElement.textContent = 'Visit W3Schools'; // Also change link text
+    </script>
+    </section>
+
+        <h2>Objective 4: Modifying CSS Styles and Applying Animations</h2>
+    <!-- ================= Objective 4 ================= -->
+    <section id="obj4">
+
+        <button id="changeStyleBtn">Toggle Red Background</button>
+        <p id="styledParagraph">This paragraph's style will change.</p>
+        <button id="animateBtn">Fade In Heading</button>
+        <h1 id="animatedHeading">I will fade in!</h1>
+
+    <script>
+        // 1. Changing individual style properties
+        const paragraph = document.getElementById('styledParagraph');
+        document.getElementById('changeStyleBtn').addEventListener('click', () => {
+            if (paragraph.style.backgroundColor === 'red') {
+                paragraph.style.backgroundColor = ''; // Reset
+                paragraph.style.color = '';
+            } else {
+                paragraph.style.backgroundColor = 'red';
+                paragraph.style.color = 'white';
+            }
+        });
+
+        // 2. Toggling CSS classes for animation
+        const headingToAnimate = document.getElementById('animatedHeading');
+        headingToAnimate.style.opacity = '0'; // Ensure it starts hidden
+        document.getElementById('animateBtn').addEventListener('click', () => {
+            headingToAnimate.classList.add('fade-in');
+        });
+    </script>
+    </section>
+
+        <h2>Objective 5: Dynamically Creating and Adding New Elements</h2>
+    <!-- ================= Objective 5 ================= -->
+    <section id="obj5">
+
+        <h1>Dynamic Element Creation Demo</h1>
+        <button id="addParagraphBtn">Add New Paragraph</button>
+        <button id="addListItemBtn">Add New List Item</button>
+        <ul id="myList">
+        <li>Existing List Item 1</li>
+        </ul>
+
+    <script>
+        let paragraphCount = 0;
+        document.getElementById('addParagraphBtn').addEventListener('click', () => {
+            // 1. Create a new paragraph element
+            const newParagraph = document.createElement('p');
+
+            // 2. Customize the paragraph
+            paragraphCount++;
+            newParagraph.textContent = `Dynamically created paragraph #${paragraphCount}`;
+            newParagraph.style.color = 'blue';
+
+            // 3. Append the paragraph to the body
+            document.body.appendChild(newParagraph);
+        });
+
+        let listItemCount = 1;
+        document.getElementById('addListItemBtn').addEventListener('click', () => {
+            // 1. Create a new list item element
+            const newListItem = document.createElement('li');
+
+            // 2. Customize the list item
+            listItemCount++;
+            newListItem.textContent = `New List Item ${listItemCount}`;
+
+            // 3. Append the list item to the existing unordered list
+            const myList = document.getElementById('myList');
+            myList.appendChild(newListItem);
+        });
+    </script>
+    </section>
+
+    </body>
+</html>

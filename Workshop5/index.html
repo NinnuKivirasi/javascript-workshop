@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Forms Demonstration</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <main class="container">
+        <h1>Sign up</h1>
+        <div id="error-summary" class="visually-hidden" role="alert" aria-live="polite"></div>
+        <form id="signupForm" novalidate>
+            <fieldset>
+                <legend>Your details</legend>
+                <label for="name">Full name</label>
+                <input id="name" name="name" type="text" required minlength="2" autocomplete="name" aria-describedby="nameHelp">
+                <small id="nameHelp" class="help">Enter your first and last name</small>
+                <p class="error" id="nameError"></p>
+                <label for="email">Email</label>
+                <input id="email" name="email" type="email" required autocomplete="email">
+                <p class="error" id="emailError"></p>
+                <label for="password">Password</label>
+                <input id="password" name="password" type="password" required minlength="8" pattern="(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,}" aria-describedby="pwdHelp">
+                <small id="pwdHelp" class="help">At least 8 characters with upper, lower, and a number</small>
+                <p class="error" id="passwordError"></p>
+                <label for="phone">Phone (optional)</label>
+                <input id="phone" name="phone" type="text" inputmode="tel" pattern="\+?[0-9\s-]{7,15}" placeholder="+358 40 123 4567">
+                <p class="error" id="phoneError"></p>
+                <label>
+                    <input id="companyToggle" type="checkbox"> Register as a company</label>
+                <div id="companyFields" hidden>
+                <label for="company">Company name</label>
+                <input id="company" name="company" type="text" minlength="2">
+                <p class="error" id="companyError"></p>
+                </div>
+            </fieldset>
+            <input type="text" id="hp" name="hp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position: absolute; left: -9999px;">
+            <button type="submit" class="btn">Create account</button>
+            <button type="button" id="clearBtn" class="btn-secondary">Clear</button>
+        </form>
+    </main>
+    <script src="app.js"></script>
+</body>
+</html>

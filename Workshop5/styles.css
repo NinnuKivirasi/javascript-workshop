@@ -1,0 +1,82 @@
+:root{
+    --brand: #20a90ee9;
+    --danger: #fe10bb;
+    --ok: #392e7d;
+}
+* {
+    box-sizing: border-box;
+}
+body {
+    font-family: system-ui,'Segoe UI',sans-serif;
+    margin: 0;
+
+}
+.container {
+    max-width: 680px;
+    margin: 18px auto;
+    padding: 0 14px;
+}
+label {
+    display: block;
+    margin-top: 12px;
+    font-weight: 600;
+}
+input, button {
+    font: inherit;
+}
+input[type="text"], input[type="email"], 
+input[type="password"], input[type="tel"] {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #b1ebba;
+    border-radius: 8px;
+    margin-top: 6px;
+}
+input:focus {
+    outline: 3px solid rgba(1,157,213,0.25);
+    border-color: var(--brand);
+}
+input:invalid[aria-invalid="true"] {
+    border-color: var(--danger);
+    background: #fff5f5;
+}
+input:valid {
+    border-color: #a9d6c9;
+}
+.help {
+    color: #5b6b7c;
+}
+.error {
+    color: var(--danger);
+    margin: 6px 0 0;
+    min-height: 1.2em;
+}
+.visually-hidden {
+    position: absolute;
+    left: -9999px;
+}
+#error-summary {
+    background: #fff3f3;
+    border-left: 6px solid var(--danger);
+    padding: 12px;
+    border-radius: 8px;
+    margin: 0 0 12px;
+}
+.btn {
+    background: var(--brand);
+    color: #fff;
+    border: 1px solid #0d4a62;
+    padding: 10px 14px;
+    border-radius: 10px;
+    margin-top: 14px;
+    cursor: pointer;
+}
+.btn-secondary {
+    background: #e0f14d;
+    color: #1f2a3a;
+    border: 1px solid #c3a108;
+    padding: 10px 14px;
+    border-radius: 10px;
+    margin-left: 8px;
+    cursor: pointer;
+}

@@ -1,4 +1,3 @@
-
 const form = document.getElementById('dayActivity');
 const summary = document.getElementById('error-summary');
 const clearBtn = document.getElementById('clearBtn');
@@ -55,55 +54,57 @@ function debounce(fn, wait = 250) {
   };
 }
 
-// Live range values
+// Escape HTML to prevent XSS
+function escapeHTML(str) {
+  return str.replace(/[&<>"']/g, m =>
+    ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m])
+  );
+}
+
+// Live range updates
 fields.sleepOutput.textContent = `${fields.sleep.value}h`;
 fields.painOutput.textContent = fields.painLevel.value;
 fields.sleep.addEventListener('input', () => fields.sleepOutput.textContent = `${fields.sleep.value}h`);
 fields.painLevel.addEventListener('input', () => fields.painOutput.textContent = fields.painLevel.value);
 
-// Prevent both medication checkboxes checked at once
+// Medication toggle (yes/no)
 [fields.medicationYes, fields.medicationNo].forEach(cb =>
   cb.addEventListener('change', () => {
     if (cb.checked) {
       [fields.medicationYes, fields.medicationNo].forEach(other => { if (other !== cb) other.checked = false; });
     }
-    // show/hide time field
     document.getElementById('medicationFields').hidden = !fields.medicationYes.checked;
     if (!fields.medicationYes.checked) fields.time.value = '';
   })
 );
 
-// Other toggles: activities, food, pain
-fields.activitiesOther.addEventListener('change', e => {
-  fields.otherActivities.hidden = !e.target.checked;
-  if (!e.target.checked) fields.otherActivities.value = '';
-});
-fields.foodOther.addEventListener('change', e => {
-  fields.otherFood.hidden = !e.target.checked;
-  if (!e.target.checked) fields.otherFood.value = '';
-});
-fields.painOther.addEventListener('change', e => {
-  fields.otherPain.hidden = !e.target.checked;
-  if (!e.target.checked) fields.otherPain.value = '';
-});
+// Other fields toggle visibility
+fields.activitiesOther.addEventListener('change', e => toggleOtherField(e, fields.otherActivities));
+fields.foodOther.addEventListener('change', e => toggleOtherField(e, fields.otherFood));
+fields.painOther.addEventListener('change', e => toggleOtherField(e, fields.otherPain));
 
-// Validation functions
+function toggleOtherField(e, input) {
+  input.hidden = !e.target.checked;
+  if (!e.target.checked) input.value = '';
+}
+
+// Validation helpers
 function validateDate() {
   const el = fields.date;
   el.setCustomValidity('');
   if (!el.value) el.setCustomValidity('Please select a date');
   errorEls.date.textContent = el.validationMessage;
-  el.setAttribute('aria-invalid', String(!el.checkValidity()));
   return el.checkValidity();
 }
+
 function validateSleep() {
   const el = fields.sleep;
   el.setCustomValidity('');
   if (!el.value) el.setCustomValidity('Please select your sleep hours');
   errorEls.sleep.textContent = el.validationMessage;
-  el.setAttribute('aria-invalid', String(!el.checkValidity()));
   return el.checkValidity();
 }
+
 function validateMedication() {
   const yes = fields.medicationYes.checked;
   const no = fields.medicationNo.checked;
@@ -118,48 +119,44 @@ function validateMedication() {
   errorEls.medication.textContent = '';
   return true;
 }
+
 function validateActivities() {
   const group = [fields.bikeWork, fields.bikeHome, fields.discgolf, fields.noActivities];
   const any = group.some(i => i.checked) || (fields.activitiesOther.checked && fields.otherActivities.value.trim() !== '');
   errorEls.activities.textContent = any ? '' : 'Please select or enter at least one activity';
   return any;
 }
+
 function validateFood() {
   const group = [fields.sugar, fields.wheat, fields.rye, fields.fodmap, fields.noFood];
   const any = group.some(i => i.checked) || (fields.foodOther.checked && fields.otherFood.value.trim() !== '');
   errorEls.food.textContent = any ? '' : 'Please select or enter a food';
   return any;
 }
+
 function validatePain() {
   const group = [fields.back, fields.legs, fields.arms, fields.migren, fields.head, fields.noPain];
   const any = group.some(i => i.checked) || (fields.painOther.checked && fields.otherPain.value.trim() !== '');
-  const level = fields.painLevel.value;
-  if (!any) { errorEls.pain.textContent = 'Please select at least one pain type'; return false; }
-  if (!level) { errorEls.pain.textContent = 'Please select pain level'; return false; }
+  if (!any) {
+    errorEls.pain.textContent = 'Please select at least one pain type';
+    return false;
+  }
   errorEls.pain.textContent = '';
   return true;
 }
-
-// Summary builder
-function buildSummary() {
-  const problems = [];
-  if (!validateDate()) problems.push('Date missing');
-  if (!validateSleep()) problems.push('Sleep missing');
-  if (!validateMedication()) problems.push('Medication incomplete');
-  if (!validateActivities()) problems.push('Activities incomplete');
-  if (!validateFood()) problems.push('Food incomplete');
-  if (!validatePain()) problems.push('Pain incomplete');
-
-  if (problems.length) {
-    summary.classList.remove('visually-hidden');
-    summary.innerHTML = `<strong>Please fix:</strong><ul><li>${problems.join('</li><li>')}</li></ul>`;
-  } else {
-    summary.classList.add('visually-hidden');
-    summary.innerHTML = '';
+// Schema validation before save
+function validateSchema(data) {
+  const required = ['date', 'sleep', 'painLevel'];
+  for (const key of required) {
+    if (!data[key] || data[key] === '') {
+      console.warn(`Missing field: ${key}`);
+      return false;
+    }
   }
+  return true;
 }
 
-// Local storage
+// Local storage handling
 function saveDraft() {
   const data = {};
   Object.keys(fields).forEach(key => {
@@ -168,6 +165,7 @@ function saveDraft() {
   });
   localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
 }
+
 function restoreDraft() {
   const raw = localStorage.getItem(STORAGE_KEY);
   if (!raw) return;
@@ -179,7 +177,6 @@ function restoreDraft() {
       if (el.type === 'checkbox') el.checked = Boolean(data[key]);
       else el.value = data[key] || '';
     });
-    // ensure dynamic visibility matches restored state
     document.getElementById('medicationFields').hidden = !fields.medicationYes.checked;
     fields.otherActivities.hidden = !fields.activitiesOther.checked;
     fields.otherFood.hidden = !fields.foodOther.checked;
@@ -190,15 +187,15 @@ function restoreDraft() {
     console.error('Restore error', e);
   }
 }
-['input','change'].forEach(evt => form.addEventListener(evt, debounce(saveDraft, 300)));
+
+['input', 'change'].forEach(evt => form.addEventListener(evt, debounce(saveDraft, 300)));
 restoreDraft();
 
-// Clear
+// Clear form
 clearBtn.addEventListener('click', () => {
   form.reset();
   localStorage.removeItem(STORAGE_KEY);
   Object.values(errorEls).forEach(el => { if (el) el.textContent = ''; });
-  // hide dynamic inputs
   document.getElementById('medicationFields').hidden = true;
   fields.otherActivities.hidden = true;
   fields.otherFood.hidden = true;
@@ -208,22 +205,33 @@ clearBtn.addEventListener('click', () => {
   buildSummary();
 });
 
-// Submit
+// Build summary with escaped HTML
+function buildSummary() {
+  const problems = [];
+  if (!validateDate()) problems.push('Date missing');
+  if (!validateSleep()) problems.push('Sleep missing');
+  if (!validateMedication()) problems.push('Medication incomplete');
+  if (!validateActivities()) problems.push('Activities incomplete');
+  if (!validateFood()) problems.push('Food incomplete');
+  if (!validatePain()) problems.push('Pain incomplete');
+
+  if (problems.length) {
+    summary.classList.remove('visually-hidden');
+    summary.innerHTML = `<strong>Please fix:</strong><ul><li>${problems.map(escapeHTML).join('</li><li>')}</li></ul>`;
+  } else {
+    summary.classList.add('visually-hidden');
+    summary.innerHTML = '';
+  }
+}
+
+// Submit handler with loading state
 form.addEventListener('submit', async e => {
   e.preventDefault();
+
   const ok = validateDate() && validateSleep() && validateMedication() && validateActivities() && validateFood() && validatePain();
   buildSummary();
-  if (!ok) {
-    // focus first invalid field if any
-    const firstInvalid = form.querySelector('.error:not(:empty)');
-    if (firstInvalid) {
-      const nextInput = firstInvalid.previousElementSibling || firstInvalid.parentElement.querySelector('input, textarea');
-      if (nextInput) nextInput.focus();
-    }
-    return;
-  }
+  if (!ok) return;
 
-  // prepare payload
   const payload = {};
   Object.keys(fields).forEach(key => {
     const el = fields[key];
@@ -231,16 +239,30 @@ form.addEventListener('submit', async e => {
     payload[key] = (el.type === 'checkbox') ? el.checked : el.value;
   });
 
+  if (!validateSchema(payload)) {
+    alert('Some required data missing.');
+    return;
+  }
+
+  // 🌀 Show loading state
+  const saveBtn = form.querySelector('.btn');
+  saveBtn.disabled = true;
+  saveBtn.textContent = 'Saving...';
+  document.getElementById('loadingOverlay').classList.add('active');
+
   try {
     const resp = await fetch('https://jsonplaceholder.typicode.com/posts', {
       method: 'POST',
-      headers: {'Content-Type':'application/json'},
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
     });
     const data = await resp.json();
     alert('Saved successfully — demo id: ' + data.id);
   } catch (err) {
     alert('Network error. Try later.');
-    console.error(err);
+  } finally {
+    saveBtn.disabled = false;
+    saveBtn.textContent = 'Save';
+    document.getElementById('loadingOverlay').classList.remove('active');
   }
 });

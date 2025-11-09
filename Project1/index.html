@@ -3,15 +3,18 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>hEDS up! Life Tracker</title>
+  <title>Chronic Companion</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="spinner"></div>
+</div>
 <body>
   <main class="container">
-    <h1>hEDS up! – Life Tracker</h1>
+    <h1>Chronic Companion – Wellness Journal</h1>
 
     <div id="error-summary" class="visually-hidden" role="alert" aria-live="polite"></div>
-
+    <div id="loading" class="loading hidden">Saving...</div>
     <form id="dayActivity" novalidate>
       <fieldset>
         <legend>Daily log</legend>

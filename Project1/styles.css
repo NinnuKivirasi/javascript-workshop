@@ -1,0 +1,108 @@
+:root{
+    --brand: #b50dbae9;
+    --danger: #fe1010;
+    --ok: #392e7d;
+}
+body {
+  font-family: system-ui, sans-serif;
+  background: #f8fafc;
+  color: #222;
+  margin: 0;
+  padding: 2rem;
+}
+
+.container {
+  max-width: 700px;
+  margin: auto;
+  background: #fff;
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  text-align: center;
+}
+
+fieldset {
+  border: 1px solid #ccc;
+  border-radius: 0.75rem;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+
+label {
+  margin: 0.25rem 0;
+}
+
+label[for="time"],
+label[for="otherActivities"],
+label[for="otherFood"],
+label[for="otherPain"],
+label[for="painLevel"],
+label[for="sleep"] {
+    display: block;
+}
+
+input[type="text"],
+input[type="time"],
+input[type="date"]{
+  padding: 0.4rem;
+  margin-bottom: 0.5rem;
+}
+
+.error {
+    color: var(--danger);
+    margin: 6px 0 0;
+    min-height: 1.2em;
+}
+.visually-hidden {
+    position: absolute;
+    left: -9999px;
+}
+
+.btn {
+    background: var(--brand);
+    font-size: larger;
+    color: #ffffff;
+    border: 1px solid #0d4a62;
+    padding: 10px 14px;
+    border-radius: 10px;
+    margin-top: 14px;
+    cursor: pointer;
+}
+.btn-secondary {
+    background: #ffffff;
+    color: #1f2a3a;
+    font-size: larger;
+    border: 1px solid #c3a108;
+    padding: 10px 14px;
+    border-radius: 10px;
+    margin-left: 8px;
+    cursor: pointer;
+}
+button:disabled {
+  opacity: 0.5;
+  cursor:pointer;
+}
+
+button:hover:not(:disabled) {
+  filter: brightness(1.1);
+}
+
+.btn-secondary:hover {
+  background: #d1d5db;
+}
+
+button:focus-visible {
+  outline: 3px solid #2563eb;
+  outline-offset: 2px;
+}
+#error-summary {
+    background: #fff3f3;
+    border-left: 6px solid var(--danger);
+    padding: 12px;
+    border-radius: 8px;
+    margin: 0 0 12px;
+}

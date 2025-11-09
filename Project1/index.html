@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>hEDS up! Life Tracker</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="container">
+    <h1>hEDS up! – Life Tracker</h1>
+
+    <div id="error-summary" class="visually-hidden" role="alert" aria-live="polite"></div>
+
+    <form id="dayActivity" novalidate>
+      <fieldset>
+        <legend>Daily log</legend>
+
+        <!-- Date -->
+        <label for="date">Date</label>
+        <input id="date" name="date" type="date" required />
+        <p class="error" id="dateError"></p>
+
+        <!-- Sleep -->
+        <h3>Sleep</h3>
+        <label for="sleep">Hours: <span id="sleepValue">6h</span></label>
+        <input id="sleep" name="sleep" type="range" min="1" max="12" value="6" />
+        <p class="error" id="sleepError"></p>
+
+        <!-- Medication -->
+        <h3>Medication</h3>
+        <label><input id="medicationYes" name="medication" type="checkbox" /> Yes</label>
+        <label><input id="medicationNo" name="medication" type="checkbox" /> No</label>
+        <div id="medicationFields" hidden>
+          <label for="time">Time</label>
+          <input id="time" name="time" type="time" />
+        </div>
+        <p class="error" id="medicationError"></p>
+
+        <!-- Activities -->
+        <h3>Activities</h3>
+        <label><input id="bikeWork" name="activities" type="checkbox" value="bikeWork"/> Biked to work</label>
+        <label><input id="bikeHome" name="activities" type="checkbox" value="bikeHome"/> Biked to home</label>
+        <label><input id="discgolf" name="activities" type="checkbox" value="discgolf"/> Disc golf</label>
+        <label><input id="noActivities" name="activities" type="checkbox" value="noActivities" /> No</label>
+        <label><input id="activitiesOther" type="checkbox" /> Other</label>
+        <input id="otherActivities" name="otherActivities" type="text" hidden placeholder="What?" />
+        <p class="error" id="activitiesError"></p>
+
+        <!-- Food -->
+        <h3>Food</h3>
+        <label><input id="sugar" name="food" type="checkbox" value="sugar" /> Sugar</label>
+        <label><input id="wheat" name="food" type="checkbox" value="wheat" /> Wheat</label>
+        <label><input id="rye" name="food" type="checkbox" value="rye" /> Rye</label>
+        <label><input id="fodmap" name="food" type="checkbox" value="fodmap" /> FODMAP fruits</label>
+        <label><input id="noFood" name="food" type="checkbox" value="noFood" /> No</label>
+        <label><input id="foodOther" type="checkbox" /> Other</label>
+        <input id="otherFood" name="otherFood" type="text" hidden placeholder="What?" />
+        <p class="error" id="foodError"></p>
+
+        <!-- Pain -->
+        <h3>Pain</h3>
+        <label><input id="back" name="pain" type="checkbox" value="back" /> Back</label>
+        <label><input id="legs" name="pain" type="checkbox" value="legs" /> Legs</label>
+        <label><input id="arms" name="pain" type="checkbox" value="arms" /> Arms</label>
+        <label><input id="migren" name="pain" type="checkbox" value="migren" /> Migraine</label>
+        <label><input id="head" name="pain" type="checkbox" value="head" /> Headache</label>
+        <label><input id="noPain" name="pain" type="checkbox" value="noPain" /> No pain</label>
+        <label><input id="painOther" type="checkbox" /> Other</label>
+        <input id="otherPain" name="otherPain" type="text" hidden placeholder="What?" />
+        <p class="error" id="painError"></p>
+
+        <label for="painLevel">Overall pain level: <span id="painValue">5</span></label>
+        <input id="painLevel" name="painLevel" type="range" min="1" max="10" value="5" />
+        
+        <div>
+          <button type="submit" class="btn">Save</button>
+          <button type="button" id="clearBtn" class="btn-secondary">Clear</button>
+        </div>
+      </fieldset>
+    </form>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

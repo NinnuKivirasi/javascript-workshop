@@ -45,12 +45,12 @@ const errorEls = {
 
 const STORAGE_KEY = 'heds-tracker-data';
 
-// Debounce helper
+// Debounce utility to limit validation frequency
 function debounce(fn, wait = 250) {
-  let t;
+  let timeout;
   return (...args) => {
-    clearTimeout(t);
-    t = setTimeout(() => fn(...args), wait);
+    clearTimeout(timeout);
+    timeout = setTimeout(() => fn(...args), wait);
   };
 }
 
@@ -61,13 +61,13 @@ function escapeHTML(str) {
   );
 }
 
-// Live range updates
+// Live updates
 fields.sleepOutput.textContent = `${fields.sleep.value}h`;
 fields.painOutput.textContent = fields.painLevel.value;
 fields.sleep.addEventListener('input', () => fields.sleepOutput.textContent = `${fields.sleep.value}h`);
 fields.painLevel.addEventListener('input', () => fields.painOutput.textContent = fields.painLevel.value);
 
-// Medication toggle (yes/no)
+// Medication yes/no
 [fields.medicationYes, fields.medicationNo].forEach(cb =>
   cb.addEventListener('change', () => {
     if (cb.checked) {
@@ -202,7 +202,8 @@ clearBtn.addEventListener('click', () => {
   fields.otherPain.hidden = true;
   fields.sleepOutput.textContent = `${fields.sleep.value}h`;
   fields.painOutput.textContent = fields.painLevel.value;
-  buildSummary();
+  summary.classList.add('visually-hidden');
+  summary.innerHTML = '';
 });
 
 // Build summary with escaped HTML
@@ -244,7 +245,7 @@ form.addEventListener('submit', async e => {
     return;
   }
 
-  // 🌀 Show loading state
+  // Show loading state
   const saveBtn = form.querySelector('.btn');
   saveBtn.disabled = true;
   saveBtn.textContent = 'Saving...';
